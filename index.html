@@ -21,10 +21,14 @@
             border-radius: 4px;
             display: flex;
             align-items: center;
-            cursor: pointer; /* Make the entire list item clickable */
+            cursor: pointer;
+        }
+        li.selected {
+            background-color: #cce5ff; /* Highlight when selected */
         }
         li input[type="checkbox"] {
             margin-right: 10px;
+            display: none; /* Hide checkbox */
         }
         button {
             margin-top: 20px;
@@ -78,6 +82,7 @@
                 // Make the whole list item clickable to select/deselect the checkbox
                 li.onclick = () => {
                     checkbox.checked = !checkbox.checked;
+                    li.classList.toggle('selected'); // Add/remove background color when selected
                 };
 
                 li.appendChild(checkbox);
@@ -120,24 +125,27 @@
             // Shuffle the selected names to ensure randomness
             shuffleArray(selectedNames);
 
-            // Generate groups of 3 as the default
             const groups = [];
+            const totalSelected = selectedNames.length;
+            let groupSize;
 
-            // Create groups of 3 first
-            while (selectedNames.length >= 3) {
-                if (selectedNames.length === 4) {
-                    break; // Stop when only 4 names remain
-                }
-                groups.push(selectedNames.splice(0, 3));
+            // Determine how many groups of 4 we need (if any)
+            let numberOfFours = 0;
+            if (totalSelected % 3 === 1) {
+                numberOfFours = 2;  // If the remainder is 1, we need two groups of 4
+            } else if (totalSelected % 3 === 2) {
+                numberOfFours = 1;  // If the remainder is 2, we need one group of 4
             }
 
-            // Handle the remainder: 1 or 4 names left means we need two groups of 4
-            if (selectedNames.length === 4 || selectedNames.length === 1) {
+            // Form groups of 4 (if needed)
+            while (numberOfFours > 0) {
                 groups.push(selectedNames.splice(0, 4));
-            } else if (selectedNames.length === 2) {
-                // If 2 names remain, distribute 1 into the last group of 3, making it 4
-                groups[groups.length - 1].push(selectedNames.splice(0, 1)[0]);
-                groups.push(selectedNames.splice(0, 3)); // Create a new group with the final 3 names
+                numberOfFours--;
+            }
+
+            // Form the remaining groups of 3
+            while (selectedNames.length >= 3) {
+                groups.push(selectedNames.splice(0, 3));
             }
 
             // Display the groups
