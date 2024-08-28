@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Select Names and Generate Random Groups</title>
+    <title>Gruppegenerer</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -21,14 +21,14 @@
             border-radius: 4px;
             display: flex;
             align-items: center;
-            cursor: pointer;
+            cursor: pointer; /* Make the entire list item clickable */
         }
         li.selected {
-            background-color: #cce5ff; /* Highlight when selected */
+            background-color: #007bff; /* Color when selected */
+            color: white;
         }
         li input[type="checkbox"] {
-            margin-right: 10px;
-            display: none; /* Hide checkbox */
+            display: none; /* Hide the checkbox itself */
         }
         button {
             margin-top: 20px;
@@ -54,111 +54,14 @@
     </style>
 </head>
 <body>
-    <h1>Select Names and Generate Random Groups</h1>
+    <h1>Norconsult Grålum - Gruppegenerer</h1>
+    <h4>Velg deltakere</h4>
     <ul id="nameList"></ul>
-    <button onclick="generateGroups()">Generate Random Groups of 3 (or 4 if needed)</button>
+    <button onclick="generateGroups()">Lag grupper</button>
 
     <div id="groupsContainer" class="group"></div>
 
-    <script>
-        // Sample list of names
-        const names = ["Alice", "Bob", "Charlie", "David", "Eve", "Frank", "Grace", "Heidi", "Ivy", "Judy"];
-
-        // Function to display names with clickable list items
-        function displayNames() {
-            const nameList = document.getElementById("nameList");
-            names.forEach((name, index) => {
-                const li = document.createElement("li");
-
-                const checkbox = document.createElement("input");
-                checkbox.type = "checkbox";
-                checkbox.id = `name-${index}`;
-                checkbox.value = name;
-
-                const label = document.createElement("label");
-                label.htmlFor = `name-${index}`;
-                label.textContent = name;
-
-                // Make the whole list item clickable to select/deselect the checkbox
-                li.onclick = () => {
-                    checkbox.checked = !checkbox.checked;
-                    li.classList.toggle('selected'); // Add/remove background color when selected
-                };
-
-                li.appendChild(checkbox);
-                li.appendChild(label);
-                nameList.appendChild(li);
-            });
-        }
-
-        // Function to get selected names
-        function getSelectedNames() {
-            const selectedNames = [];
-            names.forEach((name, index) => {
-                const checkbox = document.getElementById(`name-${index}`);
-                if (checkbox.checked) {
-                    selectedNames.push(name);
-                }
-            });
-            return selectedNames;
-        }
-
-        // Function to shuffle array (Fisher-Yates shuffle algorithm)
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-        }
-
-        // Function to generate random groups of 3 (or 4 if necessary)
-        function generateGroups() {
-            const selectedNames = getSelectedNames();
-            const groupsContainer = document.getElementById("groupsContainer");
-            groupsContainer.innerHTML = ""; // Clear previous groups
-
-            if (selectedNames.length < 3) {
-                groupsContainer.innerHTML = "<p>Please select at least 3 names to generate groups.</p>";
-                return;
-            }
-
-            // Shuffle the selected names to ensure randomness
-            shuffleArray(selectedNames);
-
-            const groups = [];
-            const totalSelected = selectedNames.length;
-            let groupSize;
-
-            // Determine how many groups of 4 we need (if any)
-            let numberOfFours = 0;
-            if (totalSelected % 3 === 1) {
-                numberOfFours = 2;  // If the remainder is 1, we need two groups of 4
-            } else if (totalSelected % 3 === 2) {
-                numberOfFours = 1;  // If the remainder is 2, we need one group of 4
-            }
-
-            // Form groups of 4 (if needed)
-            while (numberOfFours > 0) {
-                groups.push(selectedNames.splice(0, 4));
-                numberOfFours--;
-            }
-
-            // Form the remaining groups of 3
-            while (selectedNames.length >= 3) {
-                groups.push(selectedNames.splice(0, 3));
-            }
-
-            // Display the groups
-            groups.forEach((group, index) => {
-                const groupDiv = document.createElement("div");
-                groupDiv.classList.add("group-item");
-                groupDiv.innerHTML = `<strong>Group ${index + 1}:</strong> ${group.join(", ")}`;
-                groupsContainer.appendChild(groupDiv);
-            });
-        }
-
-        // Run the display function on page load
-        displayNames();
-    </script>
+    <!-- External JavaScript file -->
+    <script src="script.js"></script>
 </body>
 </html>
