@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Names and Generate Random Groups</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin: 5px 0;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .group {
+            margin-top: 20px;
+        }
+        .group-item {
+            background-color: #d1ecf1;
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Select Names and Generate Random Groups</h1>
+    <ul id="nameList"></ul>
+    <button onclick="generateGroups()">Generate Random Groups of 3</button>
+
+    <div id="groupsContainer" class="group"></div>
+
+    <script>
+        // Sample list of names
+        const names = ["Alice", "Bob", "Charlie", "David", "Eve", "Frank", "Grace", "Heidi", "Ivy", "Judy"];
+
+        // Function to display names with checkboxes
+        function displayNames() {
+            const nameList = document.getElementById("nameList");
+            names.forEach((name, index) => {
+                const li = document.createElement("li");
+
+                const checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                checkbox.id = `name-${index}`;
+                checkbox.value = name;
+
+                const label = document.createElement("label");
+                label.htmlFor = `name-${index}`;
+                label.textContent = name;
+
+                li.appendChild(checkbox);
+                li.appendChild(label);
+                nameList.appendChild(li);
+            });
+        }
+
+        // Function to get selected names
+        function getSelectedNames() {
+            const selectedNames = [];
+            names.forEach((name, index) => {
+                const checkbox = document.getElementById(`name-${index}`);
+                if (checkbox.checked) {
+                    selectedNames.push(name);
+                }
+            });
+            return selectedNames;
+        }
+
+        // Function to shuffle array (Fisher-Yates shuffle algorithm)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // Function to generate random groups of 3
+        function generateGroups() {
+            const selectedNames = getSelectedNames();
+            const groupsContainer = document.getElementById("groupsContainer");
+            groupsContainer.innerHTML = ""; // Clear previous groups
+
+            if (selectedNames.length < 3) {
+                groupsContainer.innerHTML = "<p>Please select at least 3 names to generate groups.</p>";
+                return;
+            }
+
+            // Shuffle the selected names to ensure randomness
+            shuffleArray(selectedNames);
+
+            // Generate groups of 3
+            const groups = [];
+            while (selectedNames.length > 0) {
+                groups.push(selectedNames.splice(0, 3));
+            }
+
+            // Display the groups
+            groups.forEach((group, index) => {
+                const groupDiv = document.createElement("div");
+                groupDiv.classList.add("group-item");
+                groupDiv.innerHTML = `<strong>Group ${index + 1}:</strong> ${group.join(", ")}`;
+                groupsContainer.appendChild(groupDiv);
+            });
+        }
+
+        // Run the display function on page load
+        displayNames();
+    </script>
+</body>
+</html>
