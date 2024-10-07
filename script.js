@@ -5,6 +5,7 @@ const names = [
     'Andreas Ongstad',
     'Andreas Sanna Rukke',
     'Are Stifjell',
+    'Cato Ljones',
     'Elise Finsrud Kirkebøen',
     'Farman Safi',
     'Hans Magnus Torgheim',
@@ -29,7 +30,7 @@ const names = [
     'Thormod Nygård',
     'Tommy-André Olsen',
     'Ulrik Sæther Langvik',
-    'Znar Zahraee'
+    'Znar Zahraee',
 ];
 
 // Function to display names with clickable list items
