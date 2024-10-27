@@ -11,6 +11,7 @@ const names = [
     'Harald Ågedal',
     'Henrik Lund Nossen',
     'Håkon Kvamme',
+    'Jarle André Johansen',
     'Jon Arne Engan',
     'Lars Jørgen Rostad',
     'Lars-Petter Lundmark',
@@ -27,6 +28,7 @@ const names = [
     'Synne Graven-Sneltorp',
     'Thomas Mickelborg',
     'Thormod Nygård',
+    'Torbjørn Overskott',
     'Tommy-André Olsen',
     'Ulrik Sæther Langvik',
     'Znar Zahraee'
