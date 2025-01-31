@@ -21,26 +21,38 @@
             border-radius: 4px;
             display: flex;
             align-items: center;
-            cursor: pointer; /* Make the entire list item clickable */
+            cursor: pointer;
         }
         li.selected {
-            background-color: #007bff; /* Color when selected */
+            background-color: #007bff;
             color: white;
         }
         li input[type="checkbox"] {
-            display: none; /* Hide the checkbox itself */
+            display: none;
         }
-        button {
-            margin-top: 20px;
-            padding: 10px 20px;
+        .bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
             background-color: #007bff;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .bottom-bar button {
+            background-color: #0056b3;
             color: white;
             border: none;
             border-radius: 5px;
+            padding: 10px 20px;
             cursor: pointer;
         }
-        button:hover {
-            background-color: #0056b3;
+        .bottom-bar button:hover {
+            background-color: #003d80;
         }
         .group {
             margin-top: 20px;
@@ -56,11 +68,13 @@
 <body>
     <h1>Norconsult Grålum - Gruppegenerer</h1>
     <h4>Velg deltakere</h4>
+    <input type="text" id="searchBar" placeholder="Søk etter navn..." onkeyup="filterNames()">
     <ul id="nameList"></ul>
-    <button onclick="generateGroups()">Lag grupper</button>
-
     <div id="groupsContainer" class="group"></div>
-
+    <div class="bottom-bar">
+        <span id="counter">Valgte: 0</span>
+        <button onclick="generateGroups()">Lag grupper</button>
+    </div>
     <!-- External JavaScript file -->
     <script src="script.js"></script>
 </body>

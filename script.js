@@ -1,7 +1,6 @@
 // Sample list of names
 const names = [
     'Aasmund Verpe',
-    'Ali Yasar Øzbal',
     'Andreas Ongstad',
     'Andreas Sanna Rukke',
     'Are Stifjell',
@@ -20,6 +19,8 @@ const names = [
     'Magnus Luciani Gabrielsen',
     'Marius Bjelde Andersen',
     'Markus Weberg',
+    'Martin Michalsen',
+    'Olav Eriksen',
     'Ole-Martin Trønnes',
     'Pawel Bieszke',
     'Ragnar Berglund',
@@ -38,15 +39,15 @@ const names = [
 // Function to display names with clickable list items
 function displayNames() {
     const nameList = document.getElementById("nameList");
+    nameList.innerHTML = ''; // Clear previous list
     names.forEach((name) => {
         const li = document.createElement("li");
         li.textContent = name;
-
         // Add event listener to toggle selection when the text is clicked
         li.addEventListener('click', () => {
             li.classList.toggle('selected'); // Highlight the selected item
+            updateCounter(); // Update counter when selection changes
         });
-
         nameList.appendChild(li);
     });
 }
@@ -75,11 +76,9 @@ function shuffleArray(array) {
 function listsof3(list) {
     const lists = [];
     const iterations = Math.floor(list.length / 3);
-
     for (let i = 0; i < iterations; i++) {
         lists.push([list[i * 3], list[i * 3 + 1], list[i * 3 + 2]]);
     }
-
     return lists;
 }
 
@@ -87,7 +86,6 @@ function listsof3(list) {
 function namegroups(names) {
     shuffleArray(names); // Shuffle names randomly
     let groups = [];
-
     if (names.length < 6) {
         // Logic for when there are fewer than 6 names
         if (names.length === 4) {
@@ -104,10 +102,10 @@ function namegroups(names) {
         // Logic for when there are 6 or more names
         if (names.length % 3 === 1) {
             groups = listsof3(names);
-            groups[groups.length - 1].push(names[names.length - 1]);  // Add the last leftover name to the last group
+            groups[groups.length - 1].push(names[names.length - 1]); // Add the last leftover name to the last group
         } else if (names.length % 3 === 2) {
             groups = listsof3(names);
-            groups[groups.length - 2].push(names[names.length - 2]);  // Add 2 leftover names
+            groups[groups.length - 2].push(names[names.length - 2]); // Add 2 leftover names
             groups[groups.length - 1].push(names[names.length - 1]);
         } else {
             groups = listsof3(names);
@@ -121,19 +119,11 @@ function generateGroups() {
     const selectedNames = getSelectedNames();
     const groupsContainer = document.getElementById("groupsContainer");
     groupsContainer.innerHTML = ""; // Clear previous groups
-
-    // if (selectedNames.length < 4) {
-    //     groupsContainer.innerHTML = "<p>Please select at least 4 names to generate groups.</p>";
-    //     return;
-    // }
-
     if (selectedNames.length < 4) {
         alert("Velg mer enn 3 navn");
         return;
     }
-
     const groups = namegroups(selectedNames);
-
     // Display the groups
     groups.forEach((group, index) => {
         const groupDiv = document.createElement("div");
@@ -141,8 +131,27 @@ function generateGroups() {
         groupDiv.innerHTML = `<strong>Gruppe ${index + 1}:</strong> ${group.join(", ")}`;
         groupsContainer.appendChild(groupDiv);
     });
+    groupsContainer.scrollIntoView({ behavior: 'smooth' });
+}
 
-    groupsContainer.scrollIntoView({ behavior: 'smooth'});
+// Function to filter names based on search input
+function filterNames() {
+    const searchInput = document.getElementById("searchBar").value.toLowerCase();
+    const listItems = document.querySelectorAll("#nameList li");
+    listItems.forEach((li) => {
+        if (li.textContent.toLowerCase().includes(searchInput)) {
+            li.style.display = "";
+        } else {
+            li.style.display = "none";
+        }
+    });
+}
+
+// Function to update the counter
+function updateCounter() {
+    const selectedNames = getSelectedNames();
+    const counter = document.getElementById("counter");
+    counter.textContent = `Valgte: ${selectedNames.length}`;
 }
 
 // Run the display function on page load
